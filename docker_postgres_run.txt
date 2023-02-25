@@ -1,0 +1,41 @@
+for unbuntu (linux distro)
+
+- Postgres_DB
+docker run -it \
+  -e POSTGRES_USER="root" \
+  -e POSTGRES_PASSWORD="root" \
+  -e POSTGRES_DB="ny_taxi" \
+  --network=pg-network \
+  --name postgres_db \
+  -v /e/Project/Zoom_Datatalks_class/01-2023/Week_1/docker_sql/ny_taxi_postgres_data:/var/lib/postgresql/data \
+  -p 5432:5432 \
+  postgres:13
+
+for powershell:
+
+docker run -it --name postgres_db -e POSTGRES_USER="root" -e POSTGRES_PASSWORD="root" -e POSTGRES_DB="ny_taxi" -v /e/Project/Zoom_Datatalks_class/01-2023/Week_1/docker_sql/ny_taxi_postgres_data:/var/lib/postgresql/data --network=pg-network -p 5432:5432 postgres:13
+
+- Postgres_Admin:
+for linux:
+docker run -it \
+  --name postgres_Admin \
+  -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \
+  -e PGADMIN_DEFAULT_PASSWORD="root" \
+  --network=pg-network \
+  -p 8080:80 \
+  dpage/pgadmin4
+
+for powershell:
+docker run -it --name postgres_Admin -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" -e PGADMIN_DEFAULT_PASSWORD="root" --network=pg-network -p 8080:80 dpage/pgadmin4
+
+docker run from built-in image:
+docker run -it \
+  --network=pg-network \
+  taxi_ingest:v01 \
+    --user=root \
+    --password=root \
+    --host=postgres_db \
+    --port=5432 \
+    --db=ny_taxi \
+    --table_name=yellow_taxi_data \
+    --url=${URL}
